@@ -1,4 +1,4 @@
-package main.java.athome.javafx;
+package athome.javafx;
 
 import java.io.IOException;
 
@@ -13,7 +13,12 @@ public class App extends Application {
     private static Scene scene;
     
     public static void main(String[] args) {
-        
-        System.out.println("Hi chat");
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+    
+        stage.show();
     }
 }

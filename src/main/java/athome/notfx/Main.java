@@ -1,9 +1,8 @@
-package main.java.athome;
+package athome.notfx;
 
-public class gaming {
-    
+public class Main {
+
     public static void main(String[] args) {
-        
         System.out.println("Hi chat");
     }
 }
