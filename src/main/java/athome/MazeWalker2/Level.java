@@ -3,7 +3,7 @@ package athome.MazeWalker2;
 public class Level {
     
     private String[] maze;
-    private String[] disp;
+    private String[] runningMaze;
     // Pos in terms of Y, X
     private int[] startPos = new int[2];
     private int[] currentPos = new int[2];
@@ -18,11 +18,25 @@ public class Level {
         this.startPos[0] = startPosY;
         this.startPos[1] = startPosX;
         this.currentPos = startPos;
-        this.disp = Util.makeDisplayMaze(maze);
+        this.runningMaze = Util.cloneMaze(maze);
+    }
+
+    public Level(String filePath) {
+        this.maze = Util.readLevel(filePath);
+        this.name = Util.getNameFromFile(filePath);
+        this.time = Util.getDataFromFile(filePath, "time");
+        this.startPos[0] = Util.getDataFromFile(filePath, "y");
+        this.startPos[1] = Util.getDataFromFile(filePath, "x");
+        this.currentPos = startPos;
+        this.runningMaze = Util.cloneMaze(maze);
     }
 
     public String[] getMaze() {
         return maze;
+    }
+
+    public String[] getRunningMaze() {
+        return runningMaze;
     }
 
     public String getName() {
@@ -38,20 +52,13 @@ public class Level {
     }
 
     public String[] getDisp(boolean hasPlayer) {
-        StringBuilder sb = new StringBuilder();
-        String[] send = new String[disp.length];
+        String[] send = Util.cloneMaze(runningMaze);
+        if (hasPlayer) send[currentPos[0]] = send[currentPos[0]].substring(0, currentPos[1]) + '@' + send[currentPos[0]].substring(currentPos[1]+1);
+        return Util.makeDisplayMaze(send);
+    }
 
-        for (int i = 0; i < disp.length; i++) {
-            for (int j = 0; j <disp[i].length(); j++) {
-                sb.append(disp[i].charAt(j));
-            }
+    public void makeMove(String input) {
 
-            send[i] = sb.toString();
-            sb.setLength(0);
-        }
-
-        if (hasPlayer) send[currentPos[0]] = send[currentPos[0]].substring(0, currentPos[1]) + Util.getTile('@') + send[currentPos[0]].substring(currentPos[1]+1);
-        return send;
     }
 
     public void stepTime(int decrement) {
