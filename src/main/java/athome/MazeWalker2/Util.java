@@ -117,7 +117,8 @@ public class Util {
 
     public static void printMaze(Level level) {
         System.out.println(level.getName());
-        System.out.println(String.format("Moves remaining: %d\n", level.getTime()));
+        if (level.getTime() > 0) System.out.println(String.format("Moves remaining: %d\n", level.getTime()));
+        else System.out.println("\n");
         for (int i = 0; i < level.getDisp(false).length; i++) {
             System.out.println(level.getDisp(true)[i]);
         }
