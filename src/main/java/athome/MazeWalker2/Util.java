@@ -117,10 +117,11 @@ public class Util {
 
     public static void printMaze(Level level) {
         System.out.println(level.getName());
-        if (level.getTime() > 0) System.out.println(String.format("Moves remaining: %d\n", level.getTime()));
-        else System.out.println("\n");
+        if (level.getTime() != -1) System.out.println(String.format("Moves remaining: %d", level.getTime()));
+        System.out.println("\n");
+        String[] send = level.getDisp(true);
         for (int i = 0; i < level.getDisp(false).length; i++) {
-            System.out.println(level.getDisp(true)[i]);
+            System.out.println(send[i]);
         }
     }
 
@@ -131,5 +132,47 @@ public class Util {
     public static void clearConsole() {
         System.out.println("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static File[] getGameFiles(String path) {
+        File directory = new File(path);
+        return directory.listFiles();
+    }
+
+    public static String[][] levelsWithPaths(String directory) {
+        String[][] send = new String[getGameFiles(directory).length][2]; int i = 0;
+        for (File level : getGameFiles(directory)) {
+            if (fileContains(level.getPath(), "CONFIG")) {
+                send[i][0] = getNameFromFile(level.getPath());
+                send[i][1] = "CONFIG";
+            } else {
+                send[i][0] = getNameFromFile(level.getPath());
+                send[i][1] = level.getPath();
+            }
+            i++;
+        }
+        return send;
+    }
+
+    // Modify to add more campaigns.
+    public static String[][][] fullReference() {
+        File maps = new File("src/main/java/athome/MazeWalker2/Maps");
+        String[][][] send = new String[maps.listFiles().length][][];
+        for (int i = 0; i < maps.listFiles().length; i++) {
+            send[i] = levelsWithPaths(maps.listFiles()[i].getPath());
+        }
+        return send;
+    }
+
+    public static boolean fileContains(String fileName, String check) {
+        try (Scanner sc = new Scanner (new File(fileName))) {
+            while (sc.hasNextLine()) {
+                if (sc.nextLine().contains(check)) return true;
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println(String.format("Error checking for %s", check));
+            return true;
+        }
     }
 }
