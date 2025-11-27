@@ -11,6 +11,7 @@ public class Util {
         put('_', ' ');
         put('@', '@');
         put(' ', ' ');
+        put('#', '#');
     }};
 
     private Util() {}

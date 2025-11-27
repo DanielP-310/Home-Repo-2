@@ -40,11 +40,15 @@ public class Main {
 
                 System.out.print(": ");
                 input = System.console().readLine();
+                Util.clearConsole();
 
-
+                for (int i = 0; i < selectConnect.length; i++) {
+                    for (int j = 0; j < selectConnect[i].length; j++) {
+                        if (input.equals(selectConnect[i][j][0]) && !selectConnect[i][j][1].equals("CONFIG")) RunningGame.startGame(new Level(selectConnect[i][j][1]));
+                    }
+                }
 
                 if (input.equals("quit")) select = false;
-                Util.clearConsole();
             }
 
             if (input.equals("3")) break;

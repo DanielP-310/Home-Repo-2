@@ -27,7 +27,7 @@ public class Level {
         this.time = Util.getDataFromFile(filePath, "time");
         this.startPos[0] = Util.getDataFromFile(filePath, "y");
         this.startPos[1] = Util.getDataFromFile(filePath, "x");
-        this.currentPos = startPos;
+        for (int i = 0; i < startPos.length; i++) this.currentPos[i] = startPos[i];
         this.runningMaze = Util.cloneMaze(maze);
     }
 
@@ -58,11 +58,35 @@ public class Level {
     }
 
     public void makeMove(String input) {
-
+        if (input.toLowerCase().contains("w")) {
+            if (isValidChange(currentPos[0]-1,currentPos[1])) currentPos[0] = currentPos[0]-1;
+            if (time != -1) stepTime(1);
+        }
+        else if (input.toLowerCase().contains("a")) {
+            if (isValidChange(currentPos[0],currentPos[1]-1)) currentPos[1] = currentPos[1]-1;
+            if (time != -1) stepTime(1);
+        }
+        else if (input.toLowerCase().contains("s")) {
+            if (isValidChange(currentPos[0]+1,currentPos[1])) currentPos[0] = currentPos[0]+1;
+            if (time != -1) stepTime(1);
+        }
+        else if (input.toLowerCase().contains("d")) {
+            if (isValidChange(currentPos[0],currentPos[1]+1)) currentPos[1] = currentPos[1]+1;
+            if (time != -1) stepTime(1);
+        }
     }
 
     public void stepTime(int decrement) {
         time -= decrement;
     }
 
+    public boolean isValidChange(int y, int x) {
+        if (maze[y].charAt(x) != '0') return true;
+        return false;
+    }
+
+    public boolean hasWon() {
+        if (maze[currentPos[0]].charAt(currentPos[1]) == Util.getTile('#')) return true;
+        return false;
+    }
 }
