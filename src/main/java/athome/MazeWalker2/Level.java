@@ -74,6 +74,11 @@ public class Level {
             if (isValidChange(currentPos[0],currentPos[1]+1)) currentPos[1] = currentPos[1]+1;
             if (time != -1) stepTime(1);
         }
+        else if (input.toLowerCase().contains("e")) {
+            if (maze[currentPos[0]].charAt(currentPos[1]) == '*') Util.toggleSwitch(runningMaze);
+            else if (maze[currentPos[0]].charAt(currentPos[1]) == '%') Util.collectKey(runningMaze);;
+            if (time != -1) stepTime(1);
+        }
     }
 
     public void stepTime(int decrement) {
@@ -81,12 +86,14 @@ public class Level {
     }
 
     public boolean isValidChange(int y, int x) {
-        if (maze[y].charAt(x) != '0') return true;
+        if (runningMaze[y].charAt(x) != '0' &&
+            runningMaze[y].charAt(x) != ']' &&
+            runningMaze[y].charAt(x) != '^') return true;
         return false;
     }
 
     public boolean hasWon() {
-        if (maze[currentPos[0]].charAt(currentPos[1]) == Util.getTile('#')) return true;
+        if (runningMaze[currentPos[0]].charAt(currentPos[1]) == Util.getTile('#')) return true;
         return false;
     }
 }

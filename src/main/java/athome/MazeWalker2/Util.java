@@ -12,6 +12,11 @@ public class Util {
         put('@', '@');
         put(' ', ' ');
         put('#', '#');
+        put(']', ']');
+        put('*', '*');
+        put('-', ' ');
+        put('%', '%');
+        put('^', '^');
     }};
 
     private Util() {}
@@ -108,7 +113,7 @@ public class Util {
 
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[i].length(); j++) {
-                sb.append(getTile(maze[i].charAt(j)));
+                sb.append(maze[i].charAt(j));
             }
             send[i] = sb.toString();
             sb.setLength(0);
@@ -174,6 +179,32 @@ public class Util {
         } catch (Exception e) {
             System.out.println(String.format("Error checking for %s", check));
             return true;
+        }
+    }
+
+    public static void toggleSwitch(String[] maze) {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length(); j++) {
+                if (maze[i].charAt(j) == ']') {
+                    maze[i] = maze[i].substring(0,j) + '-' + maze[i].substring(j+1);
+                }
+                else if (maze[i].charAt(j) == '-') {
+                    maze[i] = maze[i].substring(0,j) + ']' + maze[i].substring(j+1);
+                }
+            }
+        }
+    }
+
+    public static void collectKey(String[] maze) {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length(); j++) {
+                if (maze[i].charAt(j) == '%') {
+                    maze[i] = maze[i].substring(0,j) + "_" + maze[i].substring(j+1);
+                }
+                else if (maze[i].charAt(j) == '^') {
+                    maze[i] = maze[i].substring(0,j) + "#" + maze[i].substring(j+1);
+                }
+            }
         }
     }
 }

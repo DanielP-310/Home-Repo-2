@@ -19,36 +19,72 @@ public class Main {
             
             if (input.equals("1")) while(select) {
                 Util.clearConsole();
-                System.out.println("Level Select:");
-                System.out.println("Enter NAME of level to play.");
+                System.out.println("Campaign Select:");
                 System.out.println("Type 'quit' to return to the main menu.\n");
 
-                // printing list from all campaigns
+                // printing list of all campaigns
+                int tracker = 1;
                 for (int camp = 0; camp < selectConnect.length; camp++) {
                     for (int i = 0; i < selectConnect[camp].length; i++) {
-                        if (selectConnect[camp][i][1].equals("CONFIG")) System.out.println(String.format("> %s", selectConnect[camp][i][0]));
+                        if (selectConnect[camp][i][1].equals("CONFIG")) {
+                            System.out.println(String.format("> [%d] %s", tracker, selectConnect[camp][i][0]));
+                            tracker++;
+                        }
                     }
 
-                    int dispInd = 1;
-                    for (int i = 0; i < selectConnect[camp].length; i++) {
-                        if (selectConnect[camp][i][1].equals("CONFIG")) continue;
-                        System.out.println(String.format("  [%d] %s", dispInd, selectConnect[camp][i][0]));
-                        dispInd++;
-                    }
+                    
                 }
                 
 
                 System.out.print(": ");
-                input = System.console().readLine();
+                int intSelector = -1;
+                try {
+                    input = System.console().readLine();
+                    intSelector = Integer.parseInt(input) - 1;
+                    if (intSelector < 0) intSelector = -2;
+                } catch (Exception e) {
+                    intSelector = -2;
+                }
+                
                 Util.clearConsole();
 
+                if (input.equals("quit")) select = false;
+                boolean found = false;
+
                 for (int i = 0; i < selectConnect.length; i++) {
-                    for (int j = 0; j < selectConnect[i].length; j++) {
-                        if (input.equals(selectConnect[i][j][0]) && !selectConnect[i][j][1].equals("CONFIG")) RunningGame.startGame(new Level(selectConnect[i][j][1]));
+                    if (i == intSelector) {
+                        int dispInd = 1; found = true;
+                        for (int k = 0; k < selectConnect[i].length; k++) {
+                            if (selectConnect[i][k][1].equals("CONFIG")) continue;
+                            System.out.println(String.format("  [%d] %s", dispInd, selectConnect[i][k][0]));
+                            dispInd++;
+                        }
                     }
                 }
 
-                if (input.equals("quit")) select = false;
+                if (found) {
+
+                    found = false;
+                    System.out.print(": ");
+                    int lvSelect;
+
+                    try {
+                    input = System.console().readLine();
+                    lvSelect = Integer.parseInt(input);
+                    if (lvSelect < 1) lvSelect = -2;
+                    } catch (Exception e) {
+                        lvSelect = -2;
+                    }
+
+                    for (int i = 0; i < selectConnect[intSelector].length; i++) {
+                        if (i == lvSelect) {
+                            Util.clearConsole();
+                            RunningGame.startGame(new Level(selectConnect[intSelector][i][1]));
+                        }
+                    }
+                }
+
+                if (input.equals("quit")) { select = false; Util.clearConsole();}
             }
 
             if (input.equals("3")) break;
