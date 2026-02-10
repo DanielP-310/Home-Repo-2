@@ -17,6 +17,7 @@ public class Util {
         put('-', ' ');
         put('%', '%');
         put('^', '^');
+        put('[', '[');
     }};
 
     private Util() {}
@@ -203,6 +204,9 @@ public class Util {
                 }
                 else if (maze[i].charAt(j) == '^') {
                     maze[i] = maze[i].substring(0,j) + "#" + maze[i].substring(j+1);
+                }
+                else if (maze[i].charAt(j) == '[') {
+                    maze[i] = maze[i].substring(0,j) + "_" + maze[i].substring(j+1);
                 }
             }
         }
